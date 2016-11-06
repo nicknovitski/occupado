@@ -4,7 +4,7 @@
 
 let 
   pythonEnv = python3.withPackages(ps: [ps.systemd]);
-  script = ./shutter.py;
+  script = ./occupado;
 in stdenv.mkDerivation {
   name = "shutter";
   propagatedBuildInputs = [pythonEnv];
@@ -12,6 +12,6 @@ in stdenv.mkDerivation {
   phases = [ "installPhase" "fixupPhase" ];
   installPhase = ''
     mkdir -p $out/bin
-    cp ${script} $out/bin/shutter
+    cp ${script} $out/bin/occupado
   '';
 }
