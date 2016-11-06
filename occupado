@@ -22,8 +22,8 @@ from systemd import login, journal
 import time
 import datetime
 
-def one_hour_ago():
-    return datetime.datetime.fromtimestamp(time.time() - 60**2)
+def minutes_ago(m):
+    return datetime.datetime.fromtimestamp(time.time() - 60*m)
 
 def journal():
     j = journal.Reader()
@@ -31,9 +31,14 @@ def journal():
     j.add_match(SYSLOG_IDENTIFIER='systemd-logind')
     return j
 
+def is_a_logout(event):
+    return event['MESSAGE'].startswith('Removed session')
+
+def happened_since(event, t):
+    return event['_SOURCE_REALTIME_TIMESTAMP'] > t
+
 def logouts():
-    j = journal()
-    return [x for x in j if (x['MESSAGE'].startswith('Removed session') and x['_SOURCE_REALTIME_TIMESTAMP'] > one_hour_ago())]
+    return [e for e in journal() if (is_a_logout(e) and happened_since(e, minutes_ago(60)))]
 
 def sessions():
     return login.sessions()
