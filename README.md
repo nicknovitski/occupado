@@ -4,6 +4,7 @@
 ## Table of Contents
 
 - [Background](#background)
+- [NixOS](#nixos)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Contribute](#contribute)
@@ -20,26 +21,35 @@ It's written in Python, because the person who helped me determine I shouldn't
 write it in Bash was [David Strauss](https://github.com/davidstrauss), and he
 knew the python systemd bindings would help.
 
-## Installation
+## NixOS
 
-If you want to install the script on NixOs, the `default.nix` file in this
-repository lets you clone it down and put something like this in your system
-configuration:
+This repository is written as a NixOS module, so on NixOS systems, all you
+have to do is clone it somewhere on your system, and add it to your imports:
 ```nix
-let
-  occupado = pkgs.callPackage /path/to/the/repo { };
-in 
+# /etc/nixos/configuration.nix
+{ pkgs, ... }:
+
 {
-  # You probably wouldn't do this, see [Usage](#usage)
-  environment.systemPackages = [ occupado ];
+  imports = [
+    <nixpkgs/nixos/modules/virtualisation/amazon-image.nix>
+    /a/path/to/occupado/nixos.nix
+    ];
+
+  # Your system's configuration
 }
 ```
 
-Otherwise, you have to install it manually.  Since the script is a single file,
-all you need to do to use it is:
+And with that, your VM (an AWS instance, apparently) will shut down ten minutes
+before you're billed for another hour, as long as you haven't connected to it
+in the past hour.
 
-- install its dependencies
-- download it
+## Installation
+
+If you aren't using NixOS, then you need to install the script manually.  Since
+it's a single file, all you need to do is:
+
+- Get its dependencies
+- Download it
 
 ### Getting the dependencies
 
