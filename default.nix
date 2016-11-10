@@ -6,7 +6,7 @@ let
   pythonEnv = python3.withPackages(ps: [ps.systemd]);
   script = ./occupado;
 in stdenv.mkDerivation {
-  name = "shutter";
+  name = "occupado";
   propagatedBuildInputs = [pythonEnv];
   
   phases = [ "installPhase" "fixupPhase" ];
