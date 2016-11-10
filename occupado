@@ -19,6 +19,7 @@
 # status 1.
 
 from systemd import login, journal
+import argparse
 import time
 import datetime
 
@@ -37,16 +38,26 @@ def is_a_logout(event):
 def happened_since(event, t):
     return event['_SOURCE_REALTIME_TIMESTAMP'] > t
 
-def logouts():
-    return [e for e in journal() if (is_a_logout(e) and happened_since(e, minutes_ago(60)))]
+def logout_since(event, minutes):
+    return is_a_logout(event) and happened_since(event, minutes_ago(minutes))
+
+def logouts(minutes):
+    return [e for e in journal() if logout_since(e, minutes)]
 
 def sessions():
     return login.sessions()
 
+def parser():
+    p = argparse.ArgumentParser(description='Determine if the system is in-use by a human.')
+    p.add_argument('-m', '--minutes', type=int, default=60, help='Number of minutes back to look for sessions.')
+    return p
+
+args = parser().parse_args()
+
 if (len(sessions()) > 0):
     exit(0)
 else:
-    if(len(logouts()) > 0):
+    if(len(logouts(args.minutes)) > 0):
         exit(0)
     else: 
         exit(1)
