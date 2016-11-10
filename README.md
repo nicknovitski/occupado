@@ -80,8 +80,8 @@ chmod +x occupado
 ## Usage
 
 The script will exit with status 0 if there are any sessions open, or if any
-sessions have been removed in the past hour, and with status 1 otherwise.  This
-means you can make a unit which halts the system on failure.
+sessions have been removed in the past 30 minutes, and with status 1
+otherwise.  This means you can make a unit which halts the system on failure.
 
 ```
 # occupado.service
@@ -92,6 +92,8 @@ OnFailure=halt.target
 Type=simple
 ExecStart=/full/path/to/occupado
 ```
+
+You could also specify a different number of minutes to look back with the command-line argument `--minutes`.
 
 Now you need a timer to run this unit.  On AWS, since you get billed for every
 hour or portion thereof, you'd want to run it every hour, a little bit before
