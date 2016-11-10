@@ -16,7 +16,7 @@ in
     systemd.timers.occupado = {
       description = "runs occupado service every hour, ten minutes before billing time";
       timerConfig = { OnBootSec = "50minutes"; OnUnitActiveSec = "1hour"; };
-      wantedBy [ "timers.target" ];
+      wantedBy = [ "timers.target" ];
     };
   };
 }
