@@ -41,7 +41,7 @@ have to do is clone it somewhere on your system, and add it to your imports:
 
 And with that, your VM (an AWS instance, apparently) will shut down ten minutes
 before you're billed for another hour, as long as you haven't connected to it
-in the past hour.
+in the half-hour leading up to that moment.
 
 ## Installation
 

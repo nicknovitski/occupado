@@ -7,8 +7,8 @@ in
 {
   config = {
     systemd.services.occupado = {
-      description = "Shut down the system when no-one's been logged in for an hour";
-      script = "${pkg}/bin/occupado";
+      description = "Shut down the system when no-one's been logged in for 30 minutes";
+      script = "${pkg}/bin/occupado --minutes 30";
       serviceConfig.Type = "simple";
       onFailure = [ "halt.target" ];
     };
